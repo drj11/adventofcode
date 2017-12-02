@@ -33,20 +33,26 @@ func main() {
 			}
 			fs = append(fs, f)
 		}
-		p, q := minmax(fs)
+		p, q := find_pair(fs)
 		sum += q - p
 		fmt.Println(p, q)
 	}
 	fmt.Println(sum)
 }
 
-func minmax(fs []float64) (float64, float64) {
-	min := math.MaxFloat64
-	max := -math.MaxFloat64
+func find_pair(fs []float64) (float64, float64) {
 	for i := 0; i < len(fs); i++ {
-		f := fs[i]
-		min = math.Min(min, f)
-		max = math.Max(max, f)
+		for j := 0; j < len(fs); j++ {
+			a := fs[i] // dividend
+			b := fs[j] // divisor
+			if a == b {
+				continue
+			}
+			if math.Mod(a, b) == 0.0 {
+				return b, a
+			}
+		}
 	}
-	return min, max
+	log.Fatal("halp")
+	return math.NaN(), math.NaN()
 }
