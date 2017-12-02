@@ -34,7 +34,7 @@ func main() {
 			fs = append(fs, f)
 		}
 		p, q := find_pair(fs)
-		sum += q - p
+		sum += q / p
 		fmt.Println(p, q)
 	}
 	fmt.Println(sum)
