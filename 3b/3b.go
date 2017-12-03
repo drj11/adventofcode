@@ -6,10 +6,11 @@ import (
 	"math"
 )
 
-const N = 10 // size of grid
+const N = 13 // size of grid
 
 func main() {
-	// input := 312051
+	input := 312051
+	answer := 0
 
 	var g [N][N]int
 
@@ -33,7 +34,7 @@ func main() {
 	}
 
 	S(0, 0, 1)
-	for i := 2; i < 26; i++ {
+	for i := 2; i < 82; i++ {
 		x, y := cartesian(i)
 		ns := neighbours(x, y)
 		sum := 0
@@ -42,8 +43,12 @@ func main() {
 			sum += G(nx, ny)
 		}
 		S(x, y, sum)
+		if sum > input && answer == 0 {
+			answer = sum
+		}
 	}
 	P()
+	fmt.Println(answer)
 }
 
 // return coordinates of neighbours
