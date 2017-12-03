@@ -40,6 +40,17 @@ func main() {
 	d = d % n
 
 	// Now we are nearly done.
+	// n and d are the coordinates of our input cell,
+	// but shifted from what we need to compute distance to
+	// cell 1.
 
 	fmt.Println(n, d)
+
+	p := n / 2
+	q := d - p
+	if q < 0 {
+		q = -q
+	}
+
+	fmt.Println(p + q)
 }
