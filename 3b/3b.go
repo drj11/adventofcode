@@ -32,13 +32,18 @@ func main() {
 		}
 	}
 
-	for i := 1; i < 10; i++ {
+	S(0, 0, 1)
+	for i := 2; i < 26; i++ {
 		x, y := cartesian(i)
-		S(x, y, i)
+		ns := neighbours(x, y)
+		sum := 0
+		for _, neighbour := range ns {
+			nx, ny := neighbour[0], neighbour[1]
+			sum += G(nx, ny)
+		}
+		S(x, y, sum)
 	}
 	P()
-	fmt.Println(G(0, 0))
-	fmt.Println(neighbours(0, 0))
 }
 
 // return coordinates of neighbours
