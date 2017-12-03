@@ -16,16 +16,21 @@ func main() {
 	// The input lies on on the outside edge
 	// of this square grid, which we will say is of size n.
 	// n is odd, and the bottom-right cell is n*n.
-	// Find n
+	// Find n.
 	n := int(math.Ceil(math.Sqrt(float64(input))))
 	n |= 1
 
-	// The 4 corners of the square grid are
-	// n*n, n*n - n, n*n - 2*n, n*n - 3*n
+	// The 4 corners of the square grid are:
+	// n*n - 2*n  ~~~~~~~~  n*n - 3*n
+	//     '                    '
+	//     '                    '
+	//     '                    '
+	//     '                    '
+	// n*n - n  ~~~~~~~~~~~~~  n*n
 
 	// Counting backwards along the spiral,
 	// starting from the bottom-right cell,
-	// the distance to out input cell is d.
+	// the distance to our input cell is d.
 	d := n*n - input
 	if d >= 4*n {
 		log.Fatal("oh no")
