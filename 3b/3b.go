@@ -9,6 +9,17 @@ import (
 func main() {
 	input := 312051
 
+	x, y := cartesian(input)
+
+	fmt.Println(x, y)
+
+	fmt.Println(math.Abs(float64(x)) + math.Abs(float64(y)))
+}
+
+// Convert from spiral system (starting at 1) to cartesian.
+// Where starting cell 1 is at (0,0)
+// and y increases down the page.
+func cartesian(spiral int) (x, y int) {
 	// Imagine the grid of memory cells is expanded
 	// until it is a square of cells just big enough
 	// to include the input cell.
@@ -17,7 +28,7 @@ func main() {
 	// of this square grid, which we will say is of size n.
 	// n is odd, and the bottom-right cell is n*n.
 	// Find n.
-	n := int(math.Ceil(math.Sqrt(float64(input))))
+	n := int(math.Ceil(math.Sqrt(float64(spiral))))
 	n |= 1
 
 	// The 4 corners of the square grid are:
@@ -34,7 +45,7 @@ func main() {
 	// Counting backwards along the spiral,
 	// starting from the bottom-right cell,
 	// the distance to our input cell is d.
-	d := n*n - input
+	d := n*n - spiral
 	if d >= 4*n {
 		log.Fatal("oh no")
 	}
@@ -42,7 +53,7 @@ func main() {
 	// side is 0 (bottom) to 3 (right), as per diagram.
 	side := d / n
 	// Convert d to a distance from the corner
-	// that is at least as large as input.
+	// that is at least as large as spiral.
 	d = d % n
 
 	// Now we are nearly done.
@@ -55,10 +66,7 @@ func main() {
 	p := n / 2
 	q := d - p
 
-	var x, y int
-
-	// Convert to x,y where starting cell 1 is at (0,0)
-	// and y increased down the page.
+	// Convert to x,y.
 	switch side {
 	case 0:
 		y = p
@@ -74,7 +82,5 @@ func main() {
 		y = q
 	}
 
-	fmt.Println(x, y)
-
-	fmt.Println(math.Abs(float64(p)) + math.Abs(float64(q)))
+	return x, y
 }
