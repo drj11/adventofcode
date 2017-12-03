@@ -6,18 +6,50 @@ import (
 	"math"
 )
 
+const N = 10 // size of grid
+
 func main() {
-	input := 312051
+	// input := 312051
 
-	x, y := cartesian(input)
+	var g [N][N]int
 
-	fmt.Println(x, y)
-
-	fmt.Println(math.Abs(float64(x)) + math.Abs(float64(y)))
+	// get element from g
+	G := func(x, y int) int {
+		x += N / 2
+		y += N / 2
+		return g[y][x]
+	}
+	// set element in g
+	S := func(x, y, v int) {
+		x += N / 2
+		y += N / 2
+		g[y][x] = v
+	}
+	// print
+	P := func() {
+		for y := 0; y < N; y++ {
+			fmt.Println(g[y])
+		}
+	}
 
 	for i := 1; i < 10; i++ {
-		fmt.Println(cartesian(i))
+		x, y := cartesian(i)
+		S(x, y, i)
 	}
+	P()
+	fmt.Println(G(0, 0))
+	fmt.Println(neighbours(0, 0))
+}
+
+// return coordinates of neighbours
+func neighbours(x, y int) [][2]int {
+	var r [][2]int
+	for j := -1; j < 2; j++ {
+		for i := -1; i < 2; i++ {
+			r = append(r, [2]int{x + i, y + j})
+		}
+	}
+	return r
 }
 
 // Convert from spiral system (starting at 1) to cartesian.
