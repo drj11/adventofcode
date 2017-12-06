@@ -14,18 +14,55 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var m []int
+	var m [16]int
+	i := 0
 
 	words := bufio.NewScanner(inp)
 	words.Split(bufio.ScanWords)
 	for words.Scan() {
 		word := words.Text()
-		i, err := strconv.Atoi(word)
+		w, err := strconv.Atoi(word)
 		if err != nil {
 			log.Fatal(err)
 		}
-		m = append(m, i)
+		m[i] = w
+		i++
 	}
 
 	fmt.Println(m)
+
+	seen := make(map[[16]int]bool)
+	cycles := 0
+
+	for {
+		m = redistribute(m)
+		fmt.Println(m)
+		cycles++
+		if seen[m] {
+			fmt.Println(cycles)
+			return
+		}
+		seen[m] = true
+	}
+}
+
+func redistribute(m [16]int) [16]int {
+	s := 0
+	max := 0
+	for i := 0; i < 16; i++ {
+		if m[i] > max {
+			s = i
+			max = m[i]
+		}
+	}
+
+	b := max // amount to redistribute
+	m[s] = 0
+	i := (s + 1) % 16 // index to start at
+	for b > 0 {
+		m[i] += 1
+		b -= 1
+		i = (i + 1) % 16
+	}
+	return m
 }
