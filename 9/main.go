@@ -19,6 +19,7 @@ func main() {
 	re := regexp.MustCompile(
 		"(\\w+)\\s*(inc|dec)\\s*(-?\\d+)\\s*if\\s*(\\w+)\\s*([<>!=]+)\\s*(-?\\d+)")
 	register := make(map[string]float64)
+	var max float64
 
 	lines := bufio.NewScanner(inp)
 	for lines.Scan() {
@@ -62,12 +63,9 @@ func main() {
 				addend = -addend
 			}
 			register[T] += addend
+			max = math.Max(max, register[T])
 		}
 	}
 	fmt.Println(register)
-	var max float64
-	for _, v := range register {
-		max = math.Max(max, v)
-	}
 	fmt.Println(max)
 }
