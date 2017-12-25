@@ -7,8 +7,8 @@ import (
 	"os"
 )
 
-const N = 79 // size of grid
-type Grid [N][N]bool
+const N = 1079      // size of grid
+type Grid [N][N]int // 0: Clean, 1: Weakened, 2: Infected, 3: Flagged
 type Carrier struct {
 	X       int    // +ve to the right
 	Y       int    // +ve down
@@ -32,7 +32,9 @@ func main() {
 		// Assume square grid
 		o := (N - len(line)) / 2
 		for i, c := range line {
-			g[nr+o][i+o] = c == '#'
+			if c == '#' {
+				g[nr+o][i+o] = 2
+			}
 		}
 		nr += 1
 	}
@@ -41,7 +43,7 @@ func main() {
 
 	infected := 0
 
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 10000000; i++ {
 		infected += burst(&g, &c)
 	}
 	fmt.Println(infected)
@@ -49,12 +51,16 @@ func main() {
 
 func dump(g Grid) {
 	for _, row := range g {
-		for _, infected := range row {
-
-			if infected {
-				fmt.Print("#")
-			} else {
+		for _, state := range row {
+			switch state {
+			case 0:
 				fmt.Print(".")
+			case 1:
+				fmt.Print("W")
+			case 2:
+				fmt.Print("#")
+			case 3:
+				fmt.Print("#")
 			}
 		}
 		fmt.Println("")
@@ -71,22 +77,30 @@ func (c *Carrier) right() {
 	c.left()
 }
 
+func (c *Carrier) reverse() {
+	c.left()
+	c.left()
+}
+
 func (c *Carrier) forward() {
 	c.X += c.Heading[0]
 	c.Y += c.Heading[1]
 }
 
 func burst(g *Grid, c *Carrier) int {
-	if g[c.Y][c.X] {
-		fmt.Println("infected")
-		c.right()
-	} else {
-		fmt.Println("clean")
+	switch g[c.Y][c.X] {
+	case 0:
 		c.left()
+	case 1:
+
+	case 2:
+		c.right()
+	case 3:
+		c.reverse()
 	}
-	g[c.Y][c.X] = !g[c.Y][c.X]
+	g[c.Y][c.X] = (g[c.Y][c.X] + 1) % 4
 	v := 0
-	if g[c.Y][c.X] {
+	if g[c.Y][c.X] == 2 {
 		v = 1
 	}
 	c.forward()
