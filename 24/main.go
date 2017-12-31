@@ -9,11 +9,15 @@ import (
 	"strconv"
 )
 
+type Component struct{ a, b int }
+
 func main() {
 	inp, err := os.Open("input")
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	var components []Component
 
 	re := regexp.MustCompile("(\\d+)/(\\d+)")
 
@@ -33,5 +37,8 @@ func main() {
 			log.Fatal("bad port")
 		}
 		fmt.Println(a, "/", b)
+		component := Component{a, b}
+		components = append(components, component)
 	}
+	fmt.Println(components)
 }
