@@ -63,9 +63,10 @@ func bridge(i int, cs []Component) {
 		c := cs[j]
 		if c.b == port {
 			c.a, c.b = c.b, c.a
+			cs[j] = c
 		}
 		if c.a == port {
-			cs[i], cs[j] = c, cs[i]
+			cs[i], cs[j] = cs[j], cs[i]
 			bridge(i+1, cs)
 			found = true
 		}
@@ -74,6 +75,7 @@ func bridge(i int, cs []Component) {
 		s := strength(cs[:i])
 		if s > m {
 			m = s
+			fmt.Println(cs[:i])
 		}
 		fmt.Println(m, s)
 	}
