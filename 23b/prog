@@ -1,0 +1,37 @@
+set b 67
+set c b         // B == C == 67
+jnz a 2         // if a != 0 {  // Compute a new pair for B and C
+jnz 1 5
+mul b 100       //     b *= 100
+sub b -100000   //     b += 100000
+set c b         //     c = b
+sub c -17000    //     c += 17000
+                // }  B == 106_700  C == 123_700
+                // C not mutated once set here
+
+// Count the number of composites in range(B, C+1, 17)
+
+set f 1         // for { f = 1          * F *
+set d 2         // d = 2
+set e 2         // do { e = 2
+set g d         //   do {
+mul g e         //
+sub g b         //
+jnz g 2         //       if d*e == b {  // primality test?
+set f 0         //           f = 0 }    * F *
+sub e -1        //       e += 1
+set g e         
+sub g b
+jnz g -8        //   } while e != b
+sub d -1        //   d += 1
+set g d
+sub g b
+jnz g -13       // } while d != b
+jnz f 2         // if f == 0 {
+sub h -1        //     h += 1 }         ***     # times F set to 0
+set g b
+sub g c
+jnz g 2         // if b == c {
+jnz 1 3         // EXIT }
+sub b -17       // b += 17              Only mutation of B
+jnz 1 -23       // }
