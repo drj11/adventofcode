@@ -44,7 +44,8 @@ func main() {
 	bridge(0, components)
 }
 
-var m int
+var M int
+var L int
 
 // cs are all the components
 // i is the number of components that
@@ -71,13 +72,17 @@ func bridge(i int, cs []Component) {
 			found = true
 		}
 	}
+
+	// End of bridge?
 	if !found {
 		s := strength(cs[:i])
-		if s > m {
-			m = s
+		if i > L ||
+			(i == L && s > M) {
+			M = s
+			L = i
 			fmt.Println(cs[:i])
 		}
-		fmt.Println(m, s)
+		fmt.Println(L, M, s)
 	}
 }
 
